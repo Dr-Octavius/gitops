@@ -19,7 +19,7 @@ trim_trailing_whitespace = false  # Don't trim in Markdown for readability
 indent_size = 2
 
 # YAML
-[*.yml]
+[*.{yml,yaml}]
 indent_size = 2
 
 # Python
@@ -38,6 +38,10 @@ indent_size = 2
 # Go (usually tabs)
 [*.go]
 indent_style = tab
+
+# HCL
+[*.tf]
+indent_size = 2
 
 # Makefile (tabs only)
 [Makefile]
