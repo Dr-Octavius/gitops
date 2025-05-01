@@ -13,11 +13,42 @@ This repository forms the backbone of our Kubernetes GitOps strategy. It houses 
 All platform services are orchestrated via **Argo CD** in a modular, multi-repo structure.
 
 ---
+## ✨ Argo CD Manual Bootstrap (One-Time Step)
+
+Argo CD is the engine that powers GitOps workflows, but it needs to be installed before it can manage itself or other platform components.
+
+For simplicity, **we intentionally do not automate the Argo CD install** via CI or Terraform. Instead, we recommend the following manual, one-time install procedure.
+
+### 🔗 Prerequisites
+- Ensure the cluster is already provisioned by Terraform
+- The `argocd` namespace must exist (created by Terraform)
+- You must obtain access to the **kubeconfig for the target cluster**
+    - This could be sourced from DigitalOcean, EKS, or your cloud provider's CLI tools
+    - For DigitalOcean, run:
+      ```bash
+      doctl kubernetes cluster kubeconfig save <cluster-name>
+      ```
+    - For EKS:
+      ```bash
+      aws eks update-kubeconfig --name <cluster-name>
+      ```
+
+### 🔄 One-Time Argo CD Install
+Run the following:
+```bash
+kubectl apply -n argocd -f ./bootstrap/install.yaml
+```
+
+This will install the Argo CD components into the cluster. Once installed, Argo CD will take over and manage subsequent platform components via GitOps.
+
+> ✊ Note: This step is intentionally manual to keep bootstrap complexity low and to avoid managing ephemeral secrets, webhooks, and CI token dependencies. In future iterations, this can be automated if operationally justified.
+
+---
 
 ## 🧩 Repository Structure
-```
-platform-gitops/
-├── .idea                   # Dev Workspace Folder
+```bash
+gitops/
+├── .idea                   # Workspace Folder
 ├── apps/                   # App of Apps pattern for Argo CD
 │   └── argo-cd
 │       ├── install.yaml
@@ -29,7 +60,11 @@ platform-gitops/
 │   ├── dev
 │   ├── staging
 │   └── prod
-└── README.md              # You are here
+├── .gitignore
+├── CODEOWNERS
+├── CONTRIBUTING.md
+├── LICENSE
+└── README.md
 ```
 
 ---
@@ -126,6 +161,7 @@ This GitOps repo only holds Argo CD apps and core GitOps configuration. Platform
 - Argo CD’s value compounds over time — once it's installed and secured, **it automates your entire platform lifecycle**
 - Drift protection, auditability, and rollback come out of the box
 - Git becomes your single source of truth for infra and apps
+- Add Documentation on how this is just boostrap as ArgoCD is meant to be a one-time install
 
 > GitOps is not "just another deployment method" — it's an **operational contract** between your team and the cluster.
 
