@@ -1,0 +1,44 @@
+# Top-most EditorConfig file
+root = true
+
+# Default settings for all files
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+# Markdown and JSON (2 spaces preferred)
+[*.md]
+indent_size = 2
+trim_trailing_whitespace = false  # Don't trim in Markdown for readability
+
+[*.json]
+indent_size = 2
+
+# YAML
+[*.yml]
+indent_size = 2
+
+# Python
+[*.py]
+indent_size = 4
+max_line_length = 88  # Follows Black formatter style
+
+# JavaScript & TypeScript
+[*.{js,ts,jsx,tsx}]
+indent_size = 2
+
+# HTML/CSS/SCSS
+[*.{html,css,scss}]
+indent_size = 2
+
+# Go (usually tabs)
+[*.go]
+indent_style = tab
+
+# Makefile (tabs only)
+[Makefile]
+indent_style = tab
